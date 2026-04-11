@@ -1,8 +1,10 @@
 package com.example.Instructorapi.controller;
 
+import com.example.Instructorapi.dto.CreateInstructorRequest;
 import com.example.Instructorapi.model.Instructor;
 import com.example.Instructorapi.service.InstructorService;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -11,18 +13,26 @@ public class InstructorController {
 
     private final InstructorService instructorService;
 
+    // Dependency Injection melalui Constructor
     public InstructorController(InstructorService instructorService) {
         this.instructorService = instructorService;
     }
 
     @GetMapping
-    public List<Instructor> getAll() {
+    public List<Instructor> getInstructors() {
         return instructorService.getAllInstructors();
     }
 
     @PostMapping
-    public String create(@RequestBody Instructor instructor) {
-        instructorService.addInstructor(instructor);
-        return "Instructor " + instructor.getName() + " berjaya ditambah!";
+    public Instructor createInstructor(@RequestBody CreateInstructorRequest request) {
+        // Tukar borang (DTO) kepada objek sebenar (Model)
+        Instructor newInstructor = new Instructor(
+            request.getName(),
+            request.getEmail(),
+            request.getSpecialization(),
+            request.getYearsExperience()
+        );
+        
+        return instructorService.addInstructor(newInstructor);
     }
 }

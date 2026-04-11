@@ -1,23 +1,12 @@
-package com.example.Instructorapi.model;
+package com.example.Instructorapi.dto;
 
-public class Instructor {
-private String name;
+public class CreateInstructorRequest {
+    private String name;
     private String email;
     private String specialization;
     private int yearsExperience;
 
-    // Constructor Kosong (Penting untuk JSON)
-    public Instructor() {}
-
-    // Constructor Lengkap
-    public Instructor(String name, String email, String specialization, int yearsExperience) {
-        this.name = name;
-        this.email = email;
-        this.specialization = specialization;
-        this.yearsExperience = yearsExperience;
-    }
-
-    // Getters and Setters
+    // Getters and Setters (Wajib ada supaya Spring boleh baca JSON)
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public String getEmail() { return email; }
@@ -27,3 +16,4 @@ private String name;
     public int getYearsExperience() { return yearsExperience; }
     public void setYearsExperience(int yearsExperience) { this.yearsExperience = yearsExperience; }
 }
+

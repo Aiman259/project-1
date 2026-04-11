@@ -1,27 +1,28 @@
 package com.example.Instructorapi.service;
 
 import com.example.Instructorapi.model.Instructor;
-import com.example.Instructorapi.model.HealthStatus; 
+import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.stereotype.Service;
 
 @Service
 public class InstructorService {
     
+    // Simpan data dalam List (In-memory)
     private List<Instructor> instructors = new ArrayList<>();
 
     public InstructorService() {
-        // Data contoh
+        // Required: Tambah 2 sample instructor masa startup
         instructors.add(new Instructor("Aiman", "aiman@example.com", "Java Spring Boot", 5));
+        instructors.add(new Instructor("Cikgu Zharfan", "zharfan@kv.edu.my", "Electronics", 10));
     }
 
     public List<Instructor> getAllInstructors() {
         return instructors;
     }
 
-    public void addInstructor(Instructor instructor) {
+    public Instructor addInstructor(Instructor instructor) {
         instructors.add(instructor);
+        return instructor;
     }
 }
