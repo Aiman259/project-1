@@ -17,13 +17,15 @@ public class InstructorController {
     @Autowired
     private InstructorService instructorService;
 
-    // --- KEMASKINI: Menggunakan Pageable secara automatik ---
-    @GetMapping
-    public Page<Instructor> getAll(
-            @PageableDefault(page = 0, size = 5, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
-        // Objek pageable ini sudah mengandungi info page, size, dan sort dari URL
-        return instructorService.getAllInstructorsPaged(pageable);
-    }
+   
+  @GetMapping
+public Page<Instructor> getInstructors(
+        @RequestParam(required = false) String keyword,
+        @RequestParam(required = false) String specialization,
+        @PageableDefault(page = 0, size = 5, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
+    
+    return instructorService.getInstructorsCombined(keyword, specialization, pageable);
+}
 
     @GetMapping("/search")
     public List<Instructor> search(@RequestParam String keyword) {
