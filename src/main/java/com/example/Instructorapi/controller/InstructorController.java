@@ -3,6 +3,10 @@ package com.example.Instructorapi.controller;
 import com.example.Instructorapi.model.Instructor;
 import com.example.Instructorapi.service.InstructorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable; // Pastikan import springframework.data.domain
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -13,9 +17,17 @@ public class InstructorController {
     @Autowired
     private InstructorService instructorService;
 
+    // --- KEMASKINI: Menggunakan Pageable secara automatik ---
     @GetMapping
-    public List<Instructor> getAll() {
-        return instructorService.getAllInstructors();
+    public Page<Instructor> getAll(
+            @PageableDefault(page = 0, size = 5, sort = "name", direction = Sort.Direction.ASC) Pageable pageable) {
+        // Objek pageable ini sudah mengandungi info page, size, dan sort dari URL
+        return instructorService.getAllInstructorsPaged(pageable);
+    }
+
+    @GetMapping("/search")
+    public List<Instructor> search(@RequestParam String keyword) {
+        return instructorService.searchInstructorsByName(keyword);
     }
 
     @GetMapping("/{id}")
