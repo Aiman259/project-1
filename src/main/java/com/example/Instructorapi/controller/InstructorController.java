@@ -2,40 +2,41 @@ package com.example.Instructorapi.controller;
 
 import com.example.Instructorapi.model.Instructor;
 import com.example.Instructorapi.service.InstructorService;
-import com.example.Instructorapi.dto.CreateInstructorRequest; // Pastikan import ini ada
-import jakarta.validation.Valid; // Untuk validation
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/instructors")
 public class InstructorController {
 
-    private final InstructorService instructorService;
-
-    public InstructorController(InstructorService instructorService) {
-        this.instructorService = instructorService;
-    }
-    @GetMapping("/health")
-    public String healthCheck() {
-        return "API is running smoothly!";
-    }
+    @Autowired
+    private InstructorService instructorService;
 
     @GetMapping
-    public List<Instructor> getInstructors() {
+    public List<Instructor> getAll() {
         return instructorService.getAllInstructors();
     }
 
-    @PostMapping
-    public Instructor createInstructor(@Valid @RequestBody CreateInstructorRequest request) {
-        Instructor newInstructor = new Instructor(
-            request.getName(),
-            request.getEmail(),
-            request.getSpecialization(),
-            request.getYearsExperience()
-        );
+    @GetMapping("/{id}")
+    public Instructor getById(@PathVariable String id) {
+        return instructorService.getInstructorById(id)
+                .orElseThrow(() -> new RuntimeException("Instructor not found"));
+    }
 
-        return instructorService.addInstructor(newInstructor);
+    @PostMapping
+    public Instructor create(@RequestBody Instructor instructor) {
+        return instructorService.createInstructor(instructor);
+    }
+
+    @PutMapping("/{id}")
+    public Instructor update(@PathVariable String id, @RequestBody Instructor instructor) {
+        return instructorService.updateInstructor(id, instructor);
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable String id) {
+        instructorService.deleteInstructor(id);
+        return "Instructor with id " + id + " has been deleted.";
     }
 }

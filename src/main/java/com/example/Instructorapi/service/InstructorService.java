@@ -1,28 +1,47 @@
 package com.example.Instructorapi.service;
 
 import com.example.Instructorapi.model.Instructor;
+import com.example.Instructorapi.repository.InstructorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InstructorService {
-    
-    // Simpan data dalam List (In-memory)
-    private List<Instructor> instructors = new ArrayList<>();
 
-    public InstructorService() {
-        // Required: Tambah 2 sample instructor masa startup
-        instructors.add(new Instructor("Aiman", "aiman@example.com", "Java Spring Boot", 5));
-        instructors.add(new Instructor("Cikgu Zharfan", "zharfan@kv.edu.my", "Electronics", 10));
-    }
+    @Autowired
+    private InstructorRepository instructorRepository;
 
+    // Get All
     public List<Instructor> getAllInstructors() {
-        return instructors;
+        return instructorRepository.findAll();
     }
 
-    public Instructor addInstructor(Instructor instructor) {
-        instructors.add(instructor);
-        return instructor;
+    // Get by ID
+    public Optional<Instructor> getInstructorById(String id) {
+        return instructorRepository.findById(id);
+    }
+
+    // Create
+    public Instructor createInstructor(Instructor instructor) {
+        return instructorRepository.save(instructor);
+    }
+
+    // Update
+    public Instructor updateInstructor(String id, Instructor details) {
+        return instructorRepository.findById(id).map(instructor -> {
+            instructor.setName(details.getName());
+            instructor.setEmail(details.getEmail());
+            instructor.setSpecialization(details.getSpecialization());
+            instructor.setYearsExperience(details.getYearsExperience());
+            instructor.setStatus(details.getStatus());
+            return instructorRepository.save(instructor);
+        }).orElseThrow(() -> new RuntimeException("Instructor not found with id " + id));
+    }
+
+    // Delete
+    public void deleteInstructor(String id) {
+        instructorRepository.deleteById(id);
     }
 }
