@@ -17,20 +17,21 @@ public class User {
 
     private String password;
 
-    private Role role;
+    private String role; // Ini dah betul String
 
-    // --- 1. CONSTRUCTOR KOSONG (Wajib untuk Spring Boot/MongoDB) ---
+    // --- 1. CONSTRUCTOR KOSONG ---
     public User() {}
 
     // --- 2. CONSTRUCTOR BERPARAMETER ---
-    public User(String name, String email, String password, Role role) {
+    // Pastikan parameter terakhir adalah String role, bukan Role role
+    public User(String name, String email, String password, String role) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.role = role;
     }
 
-    // --- 3. GETTERS AND SETTERS (Pintu untuk akses data private) ---
+    // --- 3. GETTERS AND SETTERS ---
 
     public String getId() {
         return id;
@@ -64,11 +65,13 @@ public class User {
         this.password = password;
     }
 
-    public Role getRole() {
+    // Return type mestilah String
+    public String getRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    // Parameter mestilah String
+    public void setRole(String role) {
         this.role = role;
     }
 }

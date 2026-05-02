@@ -17,7 +17,7 @@ public class UserService {
     // Simpan User Baru (Register)
     public User registerUser(User user) {
         // Check kalau email dah ada dalam database
-        if (userRepository.existsByEmail(user.getEmail())) {
+        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new RuntimeException("Error: Email is already in use!");
         }
         return userRepository.save(user);
